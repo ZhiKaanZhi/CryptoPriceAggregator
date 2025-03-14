@@ -4,7 +4,6 @@ namespace CryptoPriceAggregator.Providers;
 
 public class BitstampPriceProvider :  IPriceProvider
 {
-    public string ProviderName => "Bitstamp";
     private const string Url = "https://www.bitstamp.net/api/v2/ohlc/btcusd/?step=3600&limit=1&start=";
 
     private readonly HttpClient _httpClient;

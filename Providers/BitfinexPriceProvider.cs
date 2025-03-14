@@ -4,7 +4,6 @@ namespace CryptoPriceAggregator.Providers;
 
 public class BitfinexPriceProvider : IPriceProvider
 {
-    public string ProviderName => "Bitfinex";
     private const string Url = "https://api-pub.bitfinex.com/v2/candles/trade:1h:tBTCUSD/hist?start=";
     
     private readonly HttpClient _httpClient;
