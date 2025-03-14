@@ -1,0 +1,16 @@
+﻿*.vs/
+*.user
+*.suo
+*.user
+*.suo
+*.cache
+*.config
+bin/
+obj/
+.vscode/
+*.db
+.migrations/
+.DS_Store
+node_modules/
+.env
+appsettings.json
