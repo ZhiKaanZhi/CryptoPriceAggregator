@@ -19,6 +19,7 @@ builder.Services.AddDbContext<PriceDbContext>(options =>
 // Register Repository & Services
 builder.Services.AddScoped<IPriceRepository, PriceRepository>();
 builder.Services.AddScoped<IPriceService, PriceService>();
+builder.Services.AddScoped<IFormulaService, FormulaService>();
 
 // Register price providers
 builder.Services.AddHttpClient();

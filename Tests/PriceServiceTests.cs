@@ -2,6 +2,7 @@
 using CryptoPriceAggregator.Providers.Interfaces;
 using CryptoPriceAggregator.Repositories.Interfaces;
 using CryptoPriceAggregator.Services.Implementations;
+using CryptoPriceAggregator.Services.Interfaces;
 using Moq;
 using Xunit;
 
@@ -11,17 +12,20 @@ public class PriceServiceTests
 {
     private readonly Mock<IPriceRepository> _priceRepositoryMock;
     private readonly Mock<IPriceProvider> _priceProviderMock;
+    private readonly Mock<IFormulaService> _formulaServiceMock;
     private readonly PriceService _priceService;
 
     public PriceServiceTests()
     {
         _priceRepositoryMock = new Mock<IPriceRepository>();
         _priceProviderMock = new Mock<IPriceProvider>();
+        _formulaServiceMock = new Mock<IFormulaService>();
         var loggerMock = new Mock<ILogger<PriceService>>();
         _priceService = new PriceService(
             _priceRepositoryMock.Object,
             new List<IPriceProvider> { _priceProviderMock.Object },
-            loggerMock.Object);
+            loggerMock.Object,
+            _formulaServiceMock.Object);
     }
 
     [Fact]
@@ -39,6 +43,7 @@ public class PriceServiceTests
         // Assert
         Assert.Equal(50000, result);
         _priceProviderMock.Verify(p => p.GetPriceAsync(It.IsAny<DateTime>()), Times.Never);
+        _formulaServiceMock.Verify(p => p.AveragePrice(It.IsAny<List<double>>()), Times.Never);
     }
 
     [Fact]
@@ -48,8 +53,11 @@ public class PriceServiceTests
         var timePoint = DateTime.UtcNow;
         timePoint = timePoint.Date.AddHours(timePoint.Hour);
         const string provider = "TestProvider";
-        var cachedPrice = new PriceDto { Provider = provider, Price = 50500 };
+        var price = 50500;
+        var cachedPrice = new PriceDto { Provider = provider, Price = price };
+        var prices = new List<double> { price };
         _priceRepositoryMock.Setup(repo => repo.GetPriceByTimePoint(timePoint)).ReturnsAsync((PriceRecord)null);
+        _formulaServiceMock.Setup(formula => formula.AveragePrice(prices)).Returns(50500);
         _priceProviderMock.Setup(p => p.GetPriceAsync(timePoint)).ReturnsAsync(cachedPrice);
 
         // Act

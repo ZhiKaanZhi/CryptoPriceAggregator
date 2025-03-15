@@ -9,15 +9,18 @@ public class PriceService : IPriceService
 {
     private readonly IPriceRepository _priceRepository;
     private readonly IEnumerable<IPriceProvider> _priceProviders;
+    private readonly IFormulaService _formulaService;
     private readonly ILogger<PriceService> _logger;
 
     public PriceService(IPriceRepository priceRepository, 
         IEnumerable<IPriceProvider> priceProviders, 
-        ILogger<PriceService> logger)
+        ILogger<PriceService> logger, 
+        IFormulaService formulaService)
     {
         _priceRepository = priceRepository;
         _priceProviders = priceProviders;
         _logger = logger;
+        _formulaService = formulaService;
     }
 
     public async Task<double?> GetAggregatedPrice(DateTime timePoint)
@@ -47,7 +50,7 @@ public class PriceService : IPriceService
             .Select(p => p.Price!.Value) 
             .ToList();
         
-        var aggregatedPrice = prices.Count != 0 ? prices.Average() : 0;
+        var aggregatedPrice = _formulaService.AveragePrice(prices);
 
         // Save result in the database for caching
         var priceRecord = new PriceRecord
