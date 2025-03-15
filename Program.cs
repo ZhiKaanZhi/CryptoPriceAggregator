@@ -9,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var applicationUrl = builder.Configuration.GetValue<string>("applicationUrl");
+builder.WebHost.UseUrls(applicationUrl);
+
 // use In-Memory DB
 builder.Services.AddDbContext<PriceDbContext>(options =>
     options.UseInMemoryDatabase("PriceDb"));
@@ -32,7 +35,6 @@ var app = builder.Build();
 // Middleware
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
