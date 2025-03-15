@@ -1,10 +1,9 @@
 ﻿using CryptoPriceAggregator.Models;
 
-namespace CryptoPriceAggregator.Repositories;
+namespace CryptoPriceAggregator.Repositories.Interfaces;
 
 public interface IPriceRepository
 {
     Task<PriceRecord?> GetPriceByTimePoint(DateTime timestamp);
     Task AddPrice(PriceRecord price);
-    Task<IQueryable<PriceRecord>> GetPricesInRange(DateTime start, DateTime end);
 }

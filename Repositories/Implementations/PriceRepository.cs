@@ -1,8 +1,9 @@
 ﻿using CryptoPriceAggregator.Data;
 using CryptoPriceAggregator.Models;
+using CryptoPriceAggregator.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace CryptoPriceAggregator.Repositories;
+namespace CryptoPriceAggregator.Repositories.Implementations;
 
 public class PriceRepository : IPriceRepository
 {
@@ -22,10 +23,5 @@ public class PriceRepository : IPriceRepository
     {
         _context.Prices.Add(price);
         await _context.SaveChangesAsync();
-    }
-
-    public async Task<IQueryable<PriceRecord>> GetPricesInRange(DateTime start, DateTime end)
-    {
-        return _context.Prices.Where(p => p.TimePoint >= start && p.TimePoint <= end);
     }
 }

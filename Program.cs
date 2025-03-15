@@ -1,7 +1,10 @@
 using CryptoPriceAggregator.Data;
-using CryptoPriceAggregator.Providers;
-using CryptoPriceAggregator.Repositories;
-using CryptoPriceAggregator.Services;
+using CryptoPriceAggregator.Providers.Implementations;
+using CryptoPriceAggregator.Providers.Interfaces;
+using CryptoPriceAggregator.Repositories.Implementations;
+using CryptoPriceAggregator.Repositories.Interfaces;
+using CryptoPriceAggregator.Services.Implementations;
+using CryptoPriceAggregator.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,16 +13,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<PriceDbContext>(options =>
     options.UseInMemoryDatabase("PriceDb"));
 
-// Register Repository & Services with DI
+// Register Repository & Services
 builder.Services.AddScoped<IPriceRepository, PriceRepository>();
 builder.Services.AddScoped<IPriceService, PriceService>();
 
-// Register external price providers dynamically
+// Register price providers
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<IPriceProvider, BitstampPriceProvider>();
 builder.Services.AddScoped<IPriceProvider, BitfinexPriceProvider>();
 
-// Add Controllers & Swagger
+// Controllers & Swagger
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();

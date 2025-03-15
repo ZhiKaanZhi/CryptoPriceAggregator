@@ -1,4 +1,5 @@
 ﻿using CryptoPriceAggregator.Services;
+using CryptoPriceAggregator.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CryptoPriceAggregator.Controllers;
