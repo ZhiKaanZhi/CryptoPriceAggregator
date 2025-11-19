@@ -34,7 +34,7 @@ public class PriceServiceTests
         // Arrange
         var timePoint = DateTime.UtcNow;
         timePoint = timePoint.Date.AddHours(timePoint.Hour);
-        var cachedPrice = new PriceRecord { TimePoint = timePoint, AggregatedPrice = 50000 };
+        var cachedPrice = new PriceRecordDbModel { TimePoint = timePoint, AggregatedPrice = 50000 };
         _priceRepositoryMock.Setup(repo => repo.GetPriceByTimePoint(timePoint)).ReturnsAsync(cachedPrice);
 
         // Act
@@ -56,7 +56,7 @@ public class PriceServiceTests
         var price = 50500;
         var cachedPrice = new PriceDto { Provider = provider, Price = price };
         var prices = new List<double> { price };
-        _priceRepositoryMock.Setup(repo => repo.GetPriceByTimePoint(timePoint)).ReturnsAsync((PriceRecord)null);
+        _priceRepositoryMock.Setup(repo => repo.GetPriceByTimePoint(timePoint)).ReturnsAsync((PriceRecordDbModel)null);
         _formulaServiceMock.Setup(formula => formula.AveragePrice(prices)).Returns(50500);
         _priceProviderMock.Setup(p => p.GetPriceAsync(timePoint)).ReturnsAsync(cachedPrice);
 
@@ -65,7 +65,7 @@ public class PriceServiceTests
 
         // Assert
         Assert.Equal(50500, result);
-        _priceRepositoryMock.Verify(repo => repo.AddPrice(It.IsAny<PriceRecord>()), Times.Once);
+        _priceRepositoryMock.Verify(repo => repo.AddPrice(It.IsAny<PriceRecordDbModel>()), Times.Once);
     }
 
     [Fact]
@@ -76,7 +76,7 @@ public class PriceServiceTests
         timePoint = timePoint.Date.AddHours(timePoint.Hour);
         const string provider = "TestProvider";
         var cachedPrice = new PriceDto { Provider = provider, Price = null };
-        _priceRepositoryMock.Setup(repo => repo.GetPriceByTimePoint(timePoint)).ReturnsAsync((PriceRecord)null);
+        _priceRepositoryMock.Setup(repo => repo.GetPriceByTimePoint(timePoint)).ReturnsAsync((PriceRecordDbModel)null);
         _priceProviderMock.Setup(p => p.GetPriceAsync(timePoint)).ReturnsAsync(cachedPrice);
         
         // Act
@@ -84,6 +84,6 @@ public class PriceServiceTests
 
         // Assert
         Assert.Equal(0, result);
-        _priceRepositoryMock.Verify(repo => repo.AddPrice(It.IsAny<PriceRecord>()), Times.Once);
+        _priceRepositoryMock.Verify(repo => repo.AddPrice(It.IsAny<PriceRecordDbModel>()), Times.Once);
     }
 }

@@ -4,6 +4,6 @@ namespace CryptoPriceAggregator.Repositories.Interfaces;
 
 public interface IPriceRepository
 {
-    Task<PriceRecord?> GetPriceByTimePoint(DateTime timestamp);
-    Task AddPrice(PriceRecord price);
+    Task<PriceRecordDbModel?> GetPriceByTimePoint(DateTime timestamp);
+    Task AddPrice(PriceRecordDbModel price);
 }

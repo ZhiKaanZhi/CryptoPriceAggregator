@@ -10,11 +10,15 @@ using Microsoft.EntityFrameworkCore;
 var builder = WebApplication.CreateBuilder(args);
 
 var applicationUrl = builder.Configuration.GetValue<string>("applicationUrl");
+var connectionString = builder.Configuration.GetConnectionString("localhostDB");
 builder.WebHost.UseUrls(applicationUrl);
 
 // use In-Memory DB
+/*builder.Services.AddDbContext<PriceDbContext>(options =>
+    options.UseInMemoryDatabase("PriceDb"));*/
+
 builder.Services.AddDbContext<PriceDbContext>(options =>
-    options.UseInMemoryDatabase("PriceDb"));
+    options.UseSqlServer(connectionString));
 
 // Register Repository & Services
 builder.Services.AddScoped<IPriceRepository, PriceRepository>();

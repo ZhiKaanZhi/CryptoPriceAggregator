@@ -5,14 +5,14 @@ namespace CryptoPriceAggregator.Data;
 
 public class PriceDbContext : DbContext
 {
-    public DbSet<PriceRecord> Prices { get; set; }
+    public DbSet<PriceRecordDbModel> PriceRecords { get; set; }
 
     public PriceDbContext(DbContextOptions<PriceDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<PriceRecord>()
-            .HasIndex(p => p.TimePoint)
+        modelBuilder.Entity<PriceRecordDbModel>()
+            .HasIndex(p => p.PriceRecordId)
             .IsUnique();
     }
 }

@@ -53,7 +53,7 @@ public class PriceService : IPriceService
         var aggregatedPrice = _formulaService.AveragePrice(prices);
 
         // Save result in the database for caching
-        var priceRecord = new PriceRecord
+        var priceRecord = new PriceRecordDbModel
         {
             TimePoint = timePoint,
             AggregatedPrice = aggregatedPrice
